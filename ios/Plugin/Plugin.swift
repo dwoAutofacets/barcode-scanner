@@ -32,8 +32,12 @@ public class BarcodeScanner: CAPPlugin, AVCaptureMetadataOutputObjectsDelegate {
             }
 
             self.videoPreviewLayer?.connection?.videoOrientation = interfaceOrientationToVideoOrientation(UIApplication.shared.statusBarOrientation)
+            NotificationCenter.default.addObserver(self, selector: #selector(self.didOrientationChange(_:)), name: UIDevice.orientationDidChangeNotification, object: nil)
         }
-
+        
+        @objc func didOrientationChange(_ notification: Notification) {
+            self.videoPreviewLayer?.connection?.videoOrientation = interfaceOrientationToVideoOrientation(UIApplication.shared.statusBarOrientation);
+        }
 
         func addPreviewLayer(_ previewLayer:AVCaptureVideoPreviewLayer?) {
             previewLayer!.videoGravity = AVLayerVideoGravity.resizeAspectFill
